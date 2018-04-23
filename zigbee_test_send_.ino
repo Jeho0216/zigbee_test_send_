@@ -35,13 +35,15 @@ void loop() {
 	delay(3000);
 	receive_str = readSerial();
 	if (receive_str != "")		//수신된 내용이 존재할 경우에 수행.
-		Serial.println(receive_str);
+		Serial.println("Receive : " + receive_str);
 
 	//라즈베리파이와 연결된 상태인지 확인.
 	if(connect_raspi == false){
-		if (receive_str.indexOf("Hello") != -1)
-			connect_raspi = true;
 		Serial.println("not connect to Raspberry Pi");
+		if (receive_str.indexOf("Hello") != -1) {
+			connect_raspi = true;
+			Serial.println("Connection success.");
+		}
 	}
 	else if (connect_raspi == true) {
 		send_data = String(type) + "," + String(value) + ";";	//합치기
@@ -50,7 +52,4 @@ void loop() {
 		if (receive_str.indexOf("Bye") != -1)
 			connect_raspi = false;
 	}
-	Serial.println("connect : " + String(connect_raspi));
-
-	//수신된 내용이 존재하지 않을 경우,
 }
